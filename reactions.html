@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Химические реакции · Химия 11</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔥</text></svg>">
+  <script src="assets/main.js"></script>
+</head>
+<body data-page="reactions">
+<header id="site-header"></header>
+
+<div class="page">
+  <aside class="toc" id="toc"></aside>
+  <main class="content">
+    <span class="badge">Раздел 3</span>
+    <h1>Химические реакции</h1>
+    <p class="lead">Как быстро идут реакции, почему некоторые из них обратимы, как уравнивать окислительно-восстановительные процессы и что происходит при электролизе.</p>
+
+    <h2 id="classes">Классификация реакций</h2>
+    <div class="table-wrap"><table>
+      <tr><th>Признак</th><th>Типы</th></tr>
+      <tr><td>Число и состав веществ</td><td>соединения, разложения, замещения, обмена</td></tr>
+      <tr><td>Тепловой эффект</td><td>экзотермические (+Q, ΔH &lt; 0) и эндотермические (−Q, ΔH &gt; 0)</td></tr>
+      <tr><td>Изменение степеней окисления</td><td>окислительно-восстановительные и без изменения степеней окисления</td></tr>
+      <tr><td>Обратимость</td><td>обратимые (⇄) и необратимые (→)</td></tr>
+      <tr><td>Участие катализатора</td><td>каталитические и некаталитические</td></tr>
+      <tr><td>Фазовый состав</td><td>гомогенные (в одной фазе) и гетерогенные (на границе фаз)</td></tr>
+    </table></div>
+
+    <!-- ================= 3.1 ================= -->
+    <h2 id="rate">Скорость химических реакций</h2>
+    <p><b>Скорость гомогенной реакции</b> — изменение концентрации вещества в единицу времени:</p>
+    <div class="formula">v = ±Δc / Δt &nbsp;&nbsp; [моль/(л·с)]</div>
+    <p>Для гетерогенной реакции скорость относят к единице площади поверхности соприкосновения фаз.</p>
+
+    <h3>Факторы, влияющие на скорость</h3>
+    <ol>
+      <li><b>Природа реагирующих веществ.</b> Например, калий реагирует с водой гораздо энергичнее, чем магний.</li>
+      <li><b>Концентрация.</b> <i>Закон действующих масс</i>: для реакции aA + bB → … скорость</li>
+    </ol>
+    <div class="formula">v = k · [A]<sup>a</sup> · [B]<sup>b</sup></div>
+    <p style="margin-top:-4px">где k — константа скорости. Концентрации твёрдых веществ в выражение не входят. Например, для 2NO + O<sub>2</sub> → 2NO<sub>2</sub>: v = k·[NO]²·[O<sub>2</sub>]; при увеличении [NO] в 2 раза скорость вырастет в 4 раза.</p>
+    <ol start="3">
+      <li><b>Температура.</b> <i>Правило Вант-Гоффа</i>: при повышении температуры на каждые 10 °C скорость большинства реакций возрастает в 2–4 раза:</li>
+    </ol>
+    <div class="formula">v<sub>2</sub> = v<sub>1</sub> · γ<sup>(t₂ − t₁)/10</sup></div>
+    <p style="margin-top:-4px">γ — температурный коэффициент (2–4). Причина: растёт доля активных молекул, энергия которых больше <b>энергии активации</b>.</p>
+    <ol start="4">
+      <li><b>Площадь поверхности</b> (для гетерогенных реакций). Порошок реагирует быстрее куска; мука и угольная пыль могут взрываться.</li>
+      <li><b>Катализатор</b> — вещество, которое ускоряет реакцию, но в итоге не расходуется. Он снижает энергию активации. <b>Ингибитор</b> — замедляет реакцию. Биологические катализаторы — <b>ферменты</b>.</li>
+      <li><b>Давление</b> — для реакций с участием газов (рост давления = рост концентрации).</li>
+    </ol>
+
+    <div class="card">
+      <b>🧮 Калькулятор правила Вант-Гоффа</b>
+      <div class="calc" style="margin-top:10px">
+        <label>γ (температурный коэффициент) <input type="number" id="vh-g" value="3" step="any" min="1"></label>
+        <label>t₁, °C <input type="number" id="vh-t1" value="20" step="any"></label>
+        <label>t₂, °C <input type="number" id="vh-t2" value="50" step="any"></label>
+      </div>
+      <div class="result" id="vh-result"></div>
+    </div>
+
+    <!-- ================= 3.2 ================= -->
+    <h2 id="equilibrium">Химическое равновесие</h2>
+    <p><b>Обратимые реакции</b> одновременно протекают в двух направлениях. <b>Химическое равновесие</b> — состояние, при котором скорости прямой и обратной реакций равны (v<sub>пр</sub> = v<sub>обр</sub>). Концентрации веществ при этом остаются постоянными, но реакция не прекращается — равновесие <b>динамическое</b>.</p>
+    <p>Для реакции aA + bB ⇄ cC + dD константа равновесия:</p>
+    <div class="formula">K = [C]<sup>c</sup>·[D]<sup>d</sup> / ([A]<sup>a</sup>·[B]<sup>b</sup>)</div>
+
+    <div class="note"><b>Принцип Ле Шателье</b>
+      Если на систему, находящуюся в равновесии, оказать внешнее воздействие (изменить концентрацию, температуру или давление), равновесие сместится в сторону той реакции, которая ослабляет это воздействие.</div>
+
+    <div class="table-wrap"><table>
+      <tr><th>Воздействие</th><th>Куда смещается равновесие</th></tr>
+      <tr><td>↑ концентрация исходного вещества</td><td>вправо (→ к продуктам)</td></tr>
+      <tr><td>↑ концентрация продукта</td><td>влево (← к исходным)</td></tr>
+      <tr><td>↑ температура</td><td>в сторону <b>эндотермической</b> реакции (−Q)</td></tr>
+      <tr><td>↓ температура</td><td>в сторону <b>экзотермической</b> реакции (+Q)</td></tr>
+      <tr><td>↑ давление</td><td>в сторону <b>меньшего</b> числа моль газов</td></tr>
+      <tr><td>↓ давление</td><td>в сторону <b>большего</b> числа моль газов</td></tr>
+      <tr><td>Катализатор</td><td><b>не смещает</b> — только ускоряет достижение равновесия</td></tr>
+    </table></div>
+
+    <div class="card">
+      <b>Пример: синтез аммиака</b>
+      <div class="eq">N<sub>2</sub>(г) + 3H<sub>2</sub>(г) ⇄ 2NH<sub>3</sub>(г) + Q</div>
+      <ul style="margin-bottom:0">
+        <li>Слева 1 + 3 = 4 моль газов, справа 2 моль → <b>повышение давления</b> смещает равновесие вправо.</li>
+        <li>Прямая реакция экзотермическая → <b>понижение температуры</b> смещает вправо (но реакция становится слишком медленной, поэтому на практике выбирают компромисс ≈ 450–500 °C).</li>
+        <li><b>Отвод NH<sub>3</sub></b> из системы смещает вправо.</li>
+      </ul>
+    </div>
+    <div class="warn"><b>Внимание</b> Если число моль газов слева и справа одинаково (H<sub>2</sub> + I<sub>2</sub> ⇄ 2HI), давление на равновесие не влияет. Твёрдые вещества при подсчёте моль газов не учитываются.</div>
+
+    <!-- ================= 3.3 ================= -->
+    <h2 id="redox">Окислительно-восстановительные реакции</h2>
+    <p><b>ОВР</b> — реакции, протекающие с изменением степеней окисления элементов.</p>
+    <div class="grid-2">
+      <div class="card"><b>Окисление</b> — процесс <b>отдачи</b> электронов; степень окисления <b>повышается</b>.<br><b>Восстановитель</b> — отдаёт электроны, сам окисляется.<br><small>Типичные: металлы, H<sub>2</sub>, C, CO, H<sub>2</sub>S, NH<sub>3</sub>, HI.</small></div>
+      <div class="card"><b>Восстановление</b> — процесс <b>присоединения</b> электронов; степень окисления <b>понижается</b>.<br><b>Окислитель</b> — принимает электроны, сам восстанавливается.<br><small>Типичные: F<sub>2</sub>, O<sub>2</sub>, Cl<sub>2</sub>, HNO<sub>3</sub>, H<sub>2</sub>SO<sub>4</sub> (конц.), KMnO<sub>4</sub>, K<sub>2</sub>Cr<sub>2</sub>O<sub>7</sub>.</small></div>
+    </div>
+    <div class="tip"><b>Как запомнить</b> «Восстановитель отдаёт — окисляется; окислитель берёт — восстанавливается». Вещества с элементом в промежуточной степени окисления (SO<sub>2</sub>, H<sub>2</sub>O<sub>2</sub>, NaNO<sub>2</sub>) могут быть и окислителем, и восстановителем.</div>
+
+    <h3>Метод электронного баланса</h3>
+    <div class="card">
+      <b>Пример:</b> медь + концентрированная азотная кислота
+      <div class="eq">Cu<sup>0</sup> + HN<sup>+5</sup>O<sub>3</sub> → Cu<sup>+2</sup>(NO<sub>3</sub>)<sub>2</sub> + N<sup>+4</sup>O<sub>2</sub> + H<sub>2</sub>O</div>
+      <ol>
+        <li>Расставляем степени окисления, находим элементы, которые их изменили: Cu (0 → +2) и N (+5 → +4).</li>
+        <li>Составляем баланс:
+          <div class="eq">Cu<sup>0</sup> − 2e<sup>−</sup> → Cu<sup>+2</sup> &nbsp;| ×1 &nbsp;<small>окисление, Cu — восстановитель</small></div>
+          <div class="eq">N<sup>+5</sup> + 1e<sup>−</sup> → N<sup>+4</sup> &nbsp;&nbsp;| ×2 &nbsp;<small>восстановление, HNO<sub>3</sub> — окислитель</small></div></li>
+        <li>Ставим коэффициенты: перед Cu — 1, перед NO<sub>2</sub> — 2. Ещё 2 молекулы HNO<sub>3</sub> идут на образование соли, всего 4. Уравниваем водород водой:</li>
+      </ol>
+      <div class="eq"><b>Cu + 4HNO<sub>3</sub>(конц.) → Cu(NO<sub>3</sub>)<sub>2</sub> + 2NO<sub>2</sub>↑ + 2H<sub>2</sub>O</b></div>
+    </div>
+
+    <h3>Влияние среды: перманганат калия</h3>
+    <div class="table-wrap"><table>
+      <tr><th>Среда</th><th>Продукт восстановления Mn<sup>+7</sup></th><th>Признак</th></tr>
+      <tr><td>Кислая (H<sub>2</sub>SO<sub>4</sub>)</td><td>Mn<sup>2+</sup> (MnSO<sub>4</sub>)</td><td>раствор обесцвечивается</td></tr>
+      <tr><td>Нейтральная (H<sub>2</sub>O)</td><td>MnO<sub>2</sub></td><td>бурый осадок</td></tr>
+      <tr><td>Щелочная (KOH)</td><td>MnO<sub>4</sub><sup>2−</sup> (K<sub>2</sub>MnO<sub>4</sub>)</td><td>зелёный раствор</td></tr>
+    </table></div>
+    <div class="eq">2KMnO<sub>4</sub> + 5Na<sub>2</sub>SO<sub>3</sub> + 3H<sub>2</sub>SO<sub>4</sub> → 2MnSO<sub>4</sub> + 5Na<sub>2</sub>SO<sub>4</sub> + K<sub>2</sub>SO<sub>4</sub> + 3H<sub>2</sub>O</div>
+
+    <h3>Типы ОВР</h3>
+    <ul>
+      <li><b>Межмолекулярные</b> — окислитель и восстановитель в разных веществах: Zn + 2HCl → ZnCl<sub>2</sub> + H<sub>2</sub>.</li>
+      <li><b>Внутримолекулярные</b> — в одном веществе, но разные элементы: 2KClO<sub>3</sub> → 2KCl + 3O<sub>2</sub>.</li>
+      <li><b>Диспропорционирование</b> — один и тот же элемент и окисляется, и восстанавливается: Cl<sub>2</sub> + 2NaOH → NaCl + NaClO + H<sub>2</sub>O.</li>
+    </ul>
+
+    <!-- ================= 3.4 ================= -->
+    <h2 id="electrolysis">Электролиз</h2>
+    <p><b>Электролиз</b> — окислительно-восстановительный процесс, протекающий на электродах при прохождении постоянного электрического тока через раствор или расплав электролита.</p>
+    <div class="note"><b>Главное правило</b>
+      На <b>катоде (−)</b> всегда идёт <b>восстановление</b> (катионы принимают электроны).<br>
+      На <b>аноде (+)</b> всегда идёт <b>окисление</b> (анионы отдают электроны).</div>
+
+    <h3>Электролиз расплавов</h3>
+    <div class="eq">NaCl (расплав) → Na<sup>+</sup> + Cl<sup>−</sup></div>
+    <div class="eq">K(−): Na<sup>+</sup> + 1e<sup>−</sup> → Na<sup>0</sup> &nbsp;&nbsp;&nbsp; A(+): 2Cl<sup>−</sup> − 2e<sup>−</sup> → Cl<sub>2</sub><sup>0</sup></div>
+    <div class="eq"><b>2NaCl → 2Na + Cl<sub>2</sub>↑</b> <small>(электролиз)</small></div>
+    <p>Так в промышленности получают самые активные металлы: Na, K, Ca, Mg, Al.</p>
+
+    <h3>Электролиз водных растворов</h3>
+    <p>В растворе с ионами соли конкурирует вода, поэтому важно знать правила.</p>
+    <div class="grid-2">
+      <div class="card">
+        <b>Катод (−): зависит от активности металла</b>
+        <ul style="padding-left:18px">
+          <li><b>Li … Al</b> (активные): металл <u>не</u> восстанавливается, восстанавливается вода:<br><code>2H₂O + 2e⁻ → H₂↑ + 2OH⁻</code></li>
+          <li><b>после Al до H</b> (Mn, Zn, Fe, Ni, Sn, Pb): одновременно металл и водород: <code>Zn²⁺ + 2e⁻ → Zn</code> и <code>2H₂O + 2e⁻ → H₂ + 2OH⁻</code></li>
+          <li><b>после H</b> (Cu, Ag, Hg, Pt, Au): восстанавливается только металл: <code>Cu²⁺ + 2e⁻ → Cu</code></li>
+          <li>Кислоты: <code>2H⁺ + 2e⁻ → H₂↑</code></li>
+        </ul>
+      </div>
+      <div class="card">
+        <b>Анод (+) инертный: зависит от аниона</b>
+        <ul style="padding-left:18px">
+          <li><b>Бескислородные</b> (Cl⁻, Br⁻, I⁻, S²⁻; кроме F⁻) окисляются сами: <code>2Cl⁻ − 2e⁻ → Cl₂↑</code></li>
+          <li><b>Кислородсодержащие</b> (SO₄²⁻, NO₃⁻, PO₄³⁻) и <b>F⁻</b> не окисляются, окисляется вода: <code>2H₂O − 4e⁻ → O₂↑ + 4H⁺</code></li>
+          <li>В щелочах: <code>4OH⁻ − 4e⁻ → O₂↑ + 2H₂O</code></li>
+          <li><b>Растворимый анод</b> (Cu, Ni, Zn…) окисляется сам: <code>Cu − 2e⁻ → Cu²⁺</code></li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Примеры</h3>
+    <div class="card">
+      <b>Раствор NaCl</b>
+      <div class="eq">K(−): 2H<sub>2</sub>O + 2e<sup>−</sup> → H<sub>2</sub> + 2OH<sup>−</sup> &nbsp;&nbsp; A(+): 2Cl<sup>−</sup> − 2e<sup>−</sup> → Cl<sub>2</sub></div>
+      <div class="eq"><b>2NaCl + 2H<sub>2</sub>O → H<sub>2</sub>↑ + Cl<sub>2</sub>↑ + 2NaOH</b></div>
+      <b>Раствор CuSO<sub>4</sub></b>
+      <div class="eq">K(−): Cu<sup>2+</sup> + 2e<sup>−</sup> → Cu &nbsp;&nbsp; A(+): 2H<sub>2</sub>O − 4e<sup>−</sup> → O<sub>2</sub> + 4H<sup>+</sup></div>
+      <div class="eq"><b>2CuSO<sub>4</sub> + 2H<sub>2</sub>O → 2Cu + O<sub>2</sub>↑ + 2H<sub>2</sub>SO<sub>4</sub></b></div>
+      <b>Раствор Na<sub>2</sub>SO<sub>4</sub></b> — фактически разлагается вода:
+      <div class="eq"><b>2H<sub>2</sub>O → 2H<sub>2</sub>↑ + O<sub>2</sub>↑</b></div>
+    </div>
+
+    <h3>Закон Фарадея</h3>
+    <div class="formula">m = M · I · t / (z · F)</div>
+    <p>m — масса вещества (г), M — молярная масса (г/моль), I — сила тока (А), t — время (с), z — число электронов на одну частицу, F = 96 485 Кл/моль — постоянная Фарадея.</p>
+
+    <div class="card">
+      <b>🧮 Калькулятор закона Фарадея</b>
+      <div class="calc" style="margin-top:10px">
+        <label>Вещество
+          <select id="f-sub">
+            <option value="63.55|2">Cu (Cu²⁺ + 2e⁻)</option>
+            <option value="107.87|1">Ag (Ag⁺ + 1e⁻)</option>
+            <option value="26.98|3">Al (Al³⁺ + 3e⁻)</option>
+            <option value="22.99|1">Na (Na⁺ + 1e⁻)</option>
+            <option value="65.38|2">Zn (Zn²⁺ + 2e⁻)</option>
+            <option value="2.016|2">H₂ (2H⁺ + 2e⁻)</option>
+            <option value="70.90|2">Cl₂ (2Cl⁻ − 2e⁻)</option>
+            <option value="32.00|4">O₂ (2H₂O − 4e⁻)</option>
+          </select></label>
+        <label>Сила тока I, А <input type="number" id="f-i" value="5" step="any" min="0"></label>
+        <label>Время t, мин <input type="number" id="f-t" value="60" step="any" min="0"></label>
+      </div>
+      <div class="result" id="f-result"></div>
+    </div>
+
+    <p><b>Применение электролиза:</b> получение активных металлов (Na, Mg, Al), хлора, водорода, щелочей; рафинирование (очистка) меди; гальваностегия (хромирование, никелирование, золочение); гальванопластика (точные металлические копии).</p>
+
+    <h2 id="check">Проверь себя</h2>
+    <details class="check"><summary>Во сколько раз увеличится скорость реакции при нагревании с 10 °C до 40 °C, если γ = 2?</summary>
+      <div>v<sub>2</sub>/v<sub>1</sub> = 2<sup>(40−10)/10</sup> = 2³ = <b>8 раз</b>.</div></details>
+    <details class="check"><summary>Как сместится равновесие 2SO₂ + O₂ ⇄ 2SO₃ + Q при повышении давления? При нагревании?</summary>
+      <div>Давление: слева 3 моль газов, справа 2 → вправо. Нагревание: прямая реакция экзотермическая → влево (в сторону эндотермической).</div></details>
+    <details class="check"><summary>Влияет ли катализатор на положение равновесия?</summary>
+      <div>Нет. Катализатор одинаково ускоряет прямую и обратную реакции, поэтому равновесие лишь быстрее устанавливается.</div></details>
+    <details class="check"><summary>Определите окислитель и восстановитель: Fe₂O₃ + 3CO → 2Fe + 3CO₂</summary>
+      <div>Fe<sup>+3</sup> + 3e<sup>−</sup> → Fe<sup>0</sup> — Fe<sub>2</sub>O<sub>3</sub> окислитель; C<sup>+2</sup> − 2e<sup>−</sup> → C<sup>+4</sup> — CO восстановитель.</div></details>
+    <details class="check"><summary>Какие продукты выделятся при электролизе раствора KI?</summary>
+      <div>K — активный металл, на катоде восстанавливается вода → H<sub>2</sub>. I⁻ — бескислородный анион, на аноде → I<sub>2</sub>. В растворе остаётся KOH: 2KI + 2H<sub>2</sub>O → H<sub>2</sub> + I<sub>2</sub> + 2KOH.</div></details>
+    <details class="check"><summary>Почему алюминий получают электролизом расплава, а не раствора?</summary>
+      <div>Al стоит в ряду активности до водорода и левее Mn: при электролизе раствора на катоде восстанавливалась бы вода, а не алюминий. Поэтому электролизу подвергают раствор Al<sub>2</sub>O<sub>3</sub> в расплавленном криолите.</div></details>
+
+    <div class="next-prev">
+      <a href="structure.html"><span>← Назад</span>Строение вещества</a>
+      <a class="next" href="inorganic.html"><span>Далее →</span>Неорганическая химия</a>
+    </div>
+  </main>
+</div>
+
+<footer id="site-footer"></footer>
+<script>
+(function () {
+  const $ = id => document.getElementById(id);
+  const fmt = (x, d = 3) => (Math.round(x * 10 ** d) / 10 ** d).toString().replace(".", ",");
+  function vh() {
+    const g = parseFloat($("vh-g").value), t1 = parseFloat($("vh-t1").value), t2 = parseFloat($("vh-t2").value);
+    if ([g, t1, t2].some(isNaN) || g <= 0) { $("vh-result").textContent = "Введите числа"; return; }
+    const k = Math.pow(g, (t2 - t1) / 10);
+    $("vh-result").textContent = "v₂ / v₁ = " + fmt(g) + "^(" + fmt(t2 - t1) + "/10) = " + fmt(k) +
+      (k >= 1 ? " — скорость увеличится в " + fmt(k) + " раз(а)" : " — скорость уменьшится в " + fmt(1 / k) + " раз(а)");
+  }
+  function far() {
+    const [M, z] = $("f-sub").value.split("|").map(Number);
+    const I = parseFloat($("f-i").value), tm = parseFloat($("f-t").value);
+    if (isNaN(I) || isNaN(tm) || I < 0 || tm < 0) { $("f-result").textContent = "Введите неотрицательные числа"; return; }
+    const q = I * tm * 60, m = M * q / (z * 96485);
+    $("f-result").textContent = "Q = " + fmt(q, 0) + " Кл; m = " + fmt(M, 2) + " · " + fmt(q, 0) + " / (" + z + " · 96485) = " + fmt(m) + " г";
+  }
+  ["vh-g", "vh-t1", "vh-t2"].forEach(i => $(i).addEventListener("input", vh));
+  ["f-i", "f-t"].forEach(i => $(i).addEventListener("input", far));
+  $("f-sub").addEventListener("change", far);
+  vh(); far();
+})();
+</script>
+</body>
+</html>

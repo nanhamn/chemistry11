@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Интерактивная таблица Менделеева · Химия 11</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧪</text></svg>">
+  <script src="assets/main.js"></script>
+</head>
+<body data-page="table">
+<header id="site-header"></header>
+
+<main class="container" style="padding-top:28px;padding-bottom:60px">
+  <span class="badge">Справочник</span>
+  <h1>Периодическая система химических элементов</h1>
+  <p class="lead">Нажмите на элемент, чтобы увидеть его электронную формулу, положение в таблице и семейство. Нажмите на категорию в легенде, чтобы выделить её.</p>
+
+  <div class="card" id="info">
+    <div class="el-info">
+      <div class="el-big c-nonmetal" id="big"><div id="big-z">1</div><div class="sym" id="big-sym">H</div><div id="big-name">Водород</div></div>
+      <dl id="details"></dl>
+    </div>
+  </div>
+
+  <div class="calc" style="margin-bottom:6px">
+    <label>Поиск по символу или названию <input type="text" id="search" placeholder="например, Fe или железо"></label>
+  </div>
+  <div class="legend" id="legend"></div>
+
+  <div class="pt-wrap"><div class="pt" id="pt"></div></div>
+  <p style="color:var(--muted);font-size:.9rem">Массы округлены; в квадратных скобках — массовое число наиболее устойчивого изотопа. Электронные формулы с «провалом» электрона отмечены отдельно.</p>
+</main>
+
+<footer id="site-footer"></footer>
+<script>
+(function () {
+  const RAW = "H|Водород|1.008,He|Гелий|4.0026,Li|Литий|6.94,Be|Бериллий|9.0122,B|Бор|10.81,C|Углерод|12.011,N|Азот|14.007,O|Кислород|15.999,F|Фтор|18.998,Ne|Неон|20.180," +
+    "Na|Натрий|22.990,Mg|Магний|24.305,Al|Алюминий|26.982,Si|Кремний|28.085,P|Фосфор|30.974,S|Сера|32.06,Cl|Хлор|35.45,Ar|Аргон|39.948," +
+    "K|Калий|39.098,Ca|Кальций|40.078,Sc|Скандий|44.956,Ti|Титан|47.867,V|Ванадий|50.942,Cr|Хром|51.996,Mn|Марганец|54.938,Fe|Железо|55.845,Co|Кобальт|58.933,Ni|Никель|58.693,Cu|Медь|63.546,Zn|Цинк|65.38,Ga|Галлий|69.723,Ge|Германий|72.630,As|Мышьяк|74.922,Se|Селен|78.971,Br|Бром|79.904,Kr|Криптон|83.798," +
+    "Rb|Рубидий|85.468,Sr|Стронций|87.62,Y|Иттрий|88.906,Zr|Цирконий|91.224,Nb|Ниобий|92.906,Mo|Молибден|95.95,Tc|Технеций|[98],Ru|Рутений|101.07,Rh|Родий|102.91,Pd|Палладий|106.42,Ag|Серебро|107.87,Cd|Кадмий|112.41,In|Индий|114.82,Sn|Олово|118.71,Sb|Сурьма|121.76,Te|Теллур|127.60,I|Иод|126.90,Xe|Ксенон|131.29," +
+    "Cs|Цезий|132.91,Ba|Барий|137.33,La|Лантан|138.91,Ce|Церий|140.12,Pr|Празеодим|140.91,Nd|Неодим|144.24,Pm|Прометий|[145],Sm|Самарий|150.36,Eu|Европий|151.96,Gd|Гадолиний|157.25,Tb|Тербий|158.93,Dy|Диспрозий|162.50,Ho|Гольмий|164.93,Er|Эрбий|167.26,Tm|Тулий|168.93,Yb|Иттербий|173.05,Lu|Лютеций|174.97," +
+    "Hf|Гафний|178.49,Ta|Тантал|180.95,W|Вольфрам|183.84,Re|Рений|186.21,Os|Осмий|190.23,Ir|Иридий|192.22,Pt|Платина|195.08,Au|Золото|196.97,Hg|Ртуть|200.59,Tl|Таллий|204.38,Pb|Свинец|207.2,Bi|Висмут|208.98,Po|Полоний|[209],At|Астат|[210],Rn|Радон|[222]," +
+    "Fr|Франций|[223],Ra|Радий|[226],Ac|Актиний|[227],Th|Торий|232.04,Pa|Протактиний|231.04,U|Уран|238.03,Np|Нептуний|[237],Pu|Плутоний|[244],Am|Америций|[243],Cm|Кюрий|[247],Bk|Берклий|[247],Cf|Калифорний|[251],Es|Эйнштейний|[252],Fm|Фермий|[257],Md|Менделевий|[258],No|Нобелий|[259],Lr|Лоуренсий|[266]," +
+    "Rf|Резерфордий|[267],Db|Дубний|[268],Sg|Сиборгий|[269],Bh|Борий|[270],Hs|Хассий|[269],Mt|Мейтнерий|[278],Ds|Дармштадтий|[281],Rg|Рентгений|[282],Cn|Коперниций|[285],Nh|Нихоний|[286],Fl|Флеровий|[289],Mc|Московий|[290],Lv|Ливерморий|[293],Ts|Теннессин|[294],Og|Оганесон|[294]";
+
+  const CATS = {
+    alkali: "Щелочные металлы", alkaline: "Щёлочноземельные металлы", transition: "Переходные металлы",
+    post: "Постпереходные металлы", metalloid: "Полуметаллы", nonmetal: "Неметаллы",
+    halogen: "Галогены", noble: "Благородные газы", lanthanide: "Лантаноиды", actinide: "Актиноиды"
+  };
+  const SETS = {
+    alkali: [3, 11, 19, 37, 55, 87], alkaline: [4, 12, 20, 38, 56, 88],
+    noble: [2, 10, 18, 36, 54, 86, 118], halogen: [9, 17, 35, 53, 85, 117],
+    metalloid: [5, 14, 32, 33, 51, 52], nonmetal: [1, 6, 7, 8, 15, 16, 34],
+    post: [13, 31, 49, 50, 81, 82, 83, 84, 113, 114, 115, 116]
+  };
+  function category(z) {
+    if (z >= 57 && z <= 71) return "lanthanide";
+    if (z >= 89 && z <= 103) return "actinide";
+    for (const k in SETS) if (SETS[k].includes(z)) return k;
+    return "transition";
+  }
+  // позиция: [строка, столбец]; строки 9 и 10 — лантаноиды и актиноиды
+  function position(z) {
+    if (z === 1) return [1, 1];
+    if (z === 2) return [1, 18];
+    const block = (start, p) => { const i = z - start; return [p, i < 2 ? i + 1 : i + 11]; };
+    if (z <= 10) return block(3, 2);
+    if (z <= 18) return block(11, 3);
+    if (z <= 36) return [4, z - 18];
+    if (z <= 54) return [5, z - 36];
+    if (z <= 56) return [6, z - 54];
+    if (z <= 71) return [9, z - 57 + 3];
+    if (z <= 86) return [6, z - 68];
+    if (z <= 88) return [7, z - 86];
+    if (z <= 103) return [10, z - 89 + 3];
+    return [7, z - 100];
+  }
+  function period(z) {
+    const r = position(z)[0];
+    return r === 9 ? 6 : r === 10 ? 7 : r;
+  }
+  function groupLabel(z) {
+    const [r, c] = position(z);
+    if (r >= 9) return "3 (IIIБ)";
+    const roman = ["", "I", "II", "III", "IV", "V", "VI", "VII", "VIII"];
+    let rus;
+    if (c <= 2) rus = roman[c] + "А";
+    else if (c >= 13) rus = roman[c - 10] + "А";
+    else if (c <= 7) rus = roman[c] + "Б";
+    else if (c <= 10) rus = "VIIIБ";
+    else rus = roman[c - 10] + "Б";
+    if (z === 2) rus = "VIIIА";
+    return c + " (" + rus + ")";
+  }
+
+  // --- Электронная конфигурация ---
+  const ORDER = ["1s","2s","2p","3s","3p","4s","3d","4p","5s","4d","5p","6s","4f","5d","6p","7s","5f","6d","7p"];
+  const CAP = { s: 2, p: 6, d: 10, f: 14 };
+  const EXC = {
+    24: [["4s","3d",1]], 29: [["4s","3d",1]], 41: [["5s","4d",1]], 42: [["5s","4d",1]], 44: [["5s","4d",1]],
+    45: [["5s","4d",1]], 46: [["5s","4d",2]], 47: [["5s","4d",1]], 57: [["4f","5d",1]], 58: [["4f","5d",1]],
+    64: [["4f","5d",1]], 78: [["6s","5d",1]], 79: [["6s","5d",1]], 89: [["5f","6d",1]], 90: [["5f","6d",2]],
+    91: [["5f","6d",1]], 92: [["5f","6d",1]], 93: [["5f","6d",1]], 96: [["5f","6d",1]]
+  };
+  const SUP = { "0":"⁰","1":"¹","2":"²","3":"³","4":"⁴","5":"⁵","6":"⁶","7":"⁷","8":"⁸","9":"⁹" };
+  const sup = n => String(n).split("").map(d => SUP[d]).join("");
+  const L = { s: 0, p: 1, d: 2, f: 3 };
+  function configMap(z) {
+    const m = {}; let left = z;
+    for (const o of ORDER) { if (left <= 0) break; const k = Math.min(CAP[o[1]], left); m[o] = k; left -= k; }
+    (EXC[z] || []).forEach(([from, to, k]) => { m[from] = (m[from] || 0) - k; m[to] = (m[to] || 0) + k; if (m[from] === 0) delete m[from]; });
+    return m;
+  }
+  const sortKeys = m => Object.keys(m).sort((a, b) => (+a[0] - +b[0]) || (L[a[1]] - L[b[1]]));
+  const fmtCfg = (m, keys) => keys.map(k => k + sup(m[k])).join(" ");
+  const NOBLE = [[2,"He"],[10,"Ne"],[18,"Ar"],[36,"Kr"],[54,"Xe"],[86,"Rn"]];
+  function config(z) {
+    const m = configMap(z);
+    const full = fmtCfg(m, sortKeys(m));
+    let core = null;
+    for (const [nz, s] of NOBLE) if (nz < z) core = [nz, s];
+    if (!core) return { full, short: full };
+    const cm = configMap(core[0]);
+    const rest = {};
+    for (const k in m) { const d = m[k] - (cm[k] || 0); if (d > 0) rest[k] = d; }
+    return { full, short: "[" + core[1] + "] " + fmtCfg(rest, sortKeys(rest)) };
+  }
+  function block(z) {
+    const c = category(z);
+    if (c === "lanthanide" || c === "actinide") return "f";
+    // по правилу Клечковского: последний заполняемый подуровень
+    let left = z, last = "1s";
+    for (const o of ORDER) { if (left <= 0) break; left -= CAP[o[1]]; last = o; }
+    if (z === 2) return "s";
+    return last[1];
+  }
+
+  // --- Данные ---
+  const EL = RAW.split(",").map((s, i) => {
+    const [sym, name, mass] = s.split("|");
+    return { z: i + 1, sym, name, mass, cat: category(i + 1) };
+  });
+
+  // --- Отрисовка ---
+  const pt = document.getElementById("pt");
+  const cells = {};
+  function place(node, r, c) {
+    node.style.gridRow = r; node.style.gridColumn = c;
+    pt.appendChild(node);
+  }
+  EL.forEach(e => {
+    const d = document.createElement("div");
+    d.className = "el c-" + e.cat;
+    d.innerHTML = '<span class="z">' + e.z + '</span><span class="sym">' + e.sym + '</span><span class="nm">' + e.name + "</span>";
+    d.title = e.name;
+    d.onclick = () => select(e.z);
+    const [r, c] = position(e.z);
+    place(d, r, c);
+    cells[e.z] = d;
+  });
+  [["57–71", 6], ["89–103", 7]].forEach(([t, r]) => {
+    const d = document.createElement("div");
+    d.className = "el placeholder c-" + (r === 6 ? "lanthanide" : "actinide");
+    d.textContent = t; place(d, r, 3);
+  });
+  const gap = document.createElement("div"); gap.className = "pt-gap"; gap.style.gridRow = 8; pt.appendChild(gap);
+
+  // --- Легенда ---
+  const legend = document.getElementById("legend");
+  let activeCat = null;
+  Object.keys(CATS).forEach(k => {
+    const b = document.createElement("button");
+    b.className = "c-" + k; b.textContent = CATS[k]; b.dataset.cat = k;
+    b.onclick = () => { activeCat = activeCat === k ? null : k; document.getElementById("search").value = ""; applyFilter(); };
+    legend.appendChild(b);
+  });
+  function applyFilter(query) {
+    const q = (query || "").trim().toLowerCase();
+    EL.forEach(e => {
+      let on = true;
+      if (activeCat) on = e.cat === activeCat;
+      if (q) on = e.sym.toLowerCase() === q || e.name.toLowerCase().includes(q) || String(e.z) === q;
+      cells[e.z].classList.toggle("dim", !on);
+    });
+    legend.querySelectorAll("button").forEach(b => b.classList.toggle("off", !!activeCat && b.dataset.cat !== activeCat));
+  }
+  document.getElementById("search").addEventListener("input", ev => {
+    activeCat = null; applyFilter(ev.target.value);
+    const q = ev.target.value.trim().toLowerCase();
+    const hit = EL.find(e => e.sym.toLowerCase() === q) || (q.length > 2 && EL.find(e => e.name.toLowerCase().startsWith(q)));
+    if (hit) select(hit.z);
+  });
+
+  // --- Карточка элемента ---
+  let selected = null;
+  function select(z) {
+    const e = EL[z - 1];
+    if (selected) cells[selected].classList.remove("selected");
+    cells[z].classList.add("selected"); selected = z;
+    const big = document.getElementById("big");
+    big.className = "el-big c-" + e.cat;
+    document.getElementById("big-z").textContent = e.z;
+    document.getElementById("big-sym").textContent = e.sym;
+    document.getElementById("big-name").textContent = e.name;
+    const cfg = config(z);
+    const mass = e.mass.startsWith("[") ? e.mass : e.mass.replace(".", ",");
+    const p = period(z);
+    const rows = [
+      ["Порядковый номер (Z)", z + " — " + z + " протонов, " + z + " электронов"],
+      ["Атомная масса", mass],
+      ["Период", p + (p <= 3 ? " (малый)" : " (большой)")],
+      ["Группа", groupLabel(z)],
+      ["Семейство", block(z) + "-элемент"],
+      ["Категория", CATS[e.cat]],
+      ["Электронная формула", cfg.full],
+      ["Сокращённая запись", cfg.short + (EXC[z] ? " ⚠️ провал электрона" : "")]
+    ];
+    document.getElementById("details").innerHTML = rows.map(r => "<dt>" + r[0] + "</dt><dd>" + r[1] + "</dd>").join("");
+  }
+  legend.querySelectorAll("button").forEach(b => b.classList.remove("off"));
+  select(26);
+})();
+</script>
+</body>
+</html>
